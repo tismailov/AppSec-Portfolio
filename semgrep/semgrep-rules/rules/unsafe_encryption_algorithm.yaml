@@ -1,0 +1,23 @@
+# unsafe_encryption_algorithm.yaml
+
+```jsx
+rules:
+  - id: unsafe-encryption-algorithm
+    languages:
+    - go
+    message: "Weak encryption algorithm detected. DES, RC4, and 3DES are cryptographically broken. Use AES-256 or GOST R 34.12-2015 (Kuznyechik) instead."
+    severity: HIGH
+    metadata:
+      cwe:
+        - "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+      owasp:
+        - "A02:2025 - Cryptographic Failures"
+      category: security
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          - pattern: des.NewCipher($DATA)
+          - pattern: des.NewTripleDESCipher($DATA)
+          - pattern: rc4.NewCipher($DATA)
+
+```

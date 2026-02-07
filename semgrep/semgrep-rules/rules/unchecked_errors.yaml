@@ -1,0 +1,20 @@
+# unchecked_errors.yaml
+
+```jsx
+rules:
+  - id: unchecked_errors
+    languages:
+      - go
+    message: "Error return value ignored. Unchecked errors can lead to unexpected behavior and security vulnerabilities. Review each case to ensure error handling is not critical."
+    severity: HIGH
+    metadata:
+      cwe:
+        - "CWE-252: Unchecked Return Value"
+      owasp:
+        - "A10:2025 - Mishandling of Exceptions"
+      category: security
+      confidence: MEDIUM
+    patterns:
+      - pattern: $VAR, _ := $FUNC($...ARGS)
+
+```

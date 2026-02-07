@@ -1,0 +1,33 @@
+# unsafe_sql_query.yaml
+
+```jsx
+rules:
+  - id: unsafe-sql-query
+    languages:
+      - go
+    message: "Using an unsafe SQL query vulnerable to SQL injection. It is recommended to use parameterized SQL queries."
+    severity: HIGH
+    metadata:
+      cwe:
+        - "CWE-89: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+      owasp:
+        - "A05:2025 - Injection"
+      category: security
+      confidence: HIGH
+    pattern-either:
+      - patterns:
+          - pattern-either:
+              - pattern: $QUERY = fmt.Sprintf($SQL, $...ARGS)
+              - pattern: $QUERY := fmt.Sprintf($SQL, $...ARGS)
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: (?i)".*\b(SELECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b.*"
+      - patterns:
+          - pattern-either:
+              - pattern: $QUERY = $SQL + $VAR
+              - pattern: $QUERY := $SQL + $VAR
+          - metavariable-regex:
+              metavariable: $SQL
+              regex: (?i)".*\b(SELECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b.*"
+
+```

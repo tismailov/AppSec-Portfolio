@@ -1,0 +1,23 @@
+# executing_user_input_on_the_server.yaml
+
+```jsx
+rules:
+  - id: executing-user-input-on-the-server
+    languages:
+      - go
+    message: "Potential OS command injection. User input passed to exec.Command() can lead to arbitrary command execution. Validate and sanitize all inputs or use safer alternatives."
+    severity: HIGH
+    metadata:
+      cwe:
+        - "CWE-78: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')"
+      owasp:
+        - "A03:2025 - Injection"
+      category: security
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          - pattern: exec.Command("sh", "-c", $INPUT)
+          - pattern: exec.Command("bash", "-c", $INPUT)
+          - pattern: exec.Command($CMD, $...ARGS)
+
+```

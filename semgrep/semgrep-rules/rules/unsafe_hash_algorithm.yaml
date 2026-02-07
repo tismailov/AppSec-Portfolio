@@ -1,0 +1,19 @@
+rules:
+  - id: unsafe-hash-algorithm
+    languages:
+      - go
+    message: "Weak hash algorithm detected. MD5 and SHA-1 are cryptographically broken due to collision vulnerabilities. Use SHA-256, SHA-512, or bcrypt/argon2 for passwords instead."
+    severity: HIGH
+    metadata:
+      cwe:
+        - "CWE-327: Use of a Broken or Risky Cryptographic Algorithm"
+      owasp:
+        - "A02:2025 - Cryptographic Failures"
+      category: security
+      confidence: HIGH
+    patterns:
+      - pattern-either:
+          - pattern: md5.New()
+          - pattern: md5.Sum($DATA)
+          - pattern: sha1.New()
+          - pattern: sha1.Sum($DATA)
